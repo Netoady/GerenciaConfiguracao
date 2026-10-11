@@ -32,7 +32,6 @@ Esta documentação tem como objetivo detalhar o procedimento completo para a co
 
 Para que o UFW funcione corretamente dentro de um container Docker (permitindo o gerenciamento de regras de iptables/redes), criamos o container utilizando a flag `--privileged` e mapeando a porta SSH para o host:
 
-```bash
 docker run -d --name ubuntu2604_no4 --privileged -p 2222:22 ubuntu:26.04 bash -c "tail -f /dev/null"
 
 Explicação dos parâmetros:
@@ -53,7 +52,9 @@ Para acessar o terminal interativo do container recém-criado como usuário root
 
     docker exec -it ubuntu2604_no4 /bin/bash
 
-4. Instalação dos Pacotes Necessários
+---
+
+## 4. Instalação dos Pacotes Necessários
 
 Com o terminal aberto dentro do container, atualizamos os repositórios de pacotes e instalamos as ferramentas essenciais para o gerenciamento de rede, edição e segurança:
 
@@ -69,7 +70,9 @@ Finalidade de cada pacote:
 
     iptables / iproute2: Ferramentas essenciais de manipulação de pacotes de rede e inspeção de sockets (como o comando ss).
 
-5. Criação e Configuração de Usuário
+---
+
+## 5. Criação e Configuração de Usuário
 
 Por questões de segurança, é recomendável não utilizar o usuário root diretamente para conexões de rotina. Criaremos o usuário gcsi:
 
@@ -82,7 +85,9 @@ Defina também uma senha para o usuário root:
 
     passwd
 
-6. Configuração do Servidor SSH
+---
+
+## 6. Configuração do Servidor SSH
 
 O arquivo de configuração principal do serviço SSH é o /etc/ssh/sshd_config. Vamos ajustá-lo para permitir o acesso adequado:
 
@@ -109,7 +114,9 @@ Gerenciamento do Serviço SSH:
 
         ss -lntp
 
-7. Configuração e Ativação do Firewall (UFW)
+---
+
+## 7. Configuração e Ativação do Firewall (UFW)
 
 O UFW atua bloqueando tráfegos indesejados e permitindo apenas o que for explicitamente autorizado.
 
@@ -134,7 +141,9 @@ O UFW atua bloqueando tráfegos indesejados e permitindo apenas o que for explic
 
         ufw status verbose
 
-8. Testes de Acesso Remoto
+---
+
+## 8. Testes de Acesso Remoto
 
     8.1. Teste Local (Dentro do próprio container)
 
@@ -148,7 +157,9 @@ O UFW atua bloqueando tráfegos indesejados e permitindo apenas o que for explic
 
         O parâmetro -p 2222 indica ao cliente SSH que a conexão deve ser direcionada para a porta mapeada no host, que fará o redirecionamento seguro para a porta 22 interna do container.
 
-9. Referências Oficiais
+---
+
+## 9. Referências Oficiais
 
     Docker Documentation: Container networking & Port publishing
 
